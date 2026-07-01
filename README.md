@@ -98,15 +98,18 @@ Cada passo será feito sob demanda, explicando decisões de arquitetura antes de
 
 | # | Passo | Descrição |
 |---|-------|-----------|
+| # | Passo | Descrição |
+|---|-------|-----------|
 | 1 | Setup | Criar projeto Vite + React + TS, instalar dependências (MUI, Apollo, React Router) |
-| 2 | Tema MUI | Configurar tema com cores e tipografia do design system |
-| 3 | Layout Base | AppBar + BottomNav + estrutura de rotas |
-| 4 | Dashboard | Componentes da Home (cards, tabela, gráfico) |
-| 5 | Lista de Despesas | Tabela com busca, filtros, paginação |
-| 6 | Nova Despesa | Formulário com validação |
-| 7 | Relatórios | Gráficos e tabela de análise |
-| 8 | Apollo Client | Conectar a API .NET (GraphQL) |
-| 9 | GraphQL Queries | Queries e mutations reais |
+| 2 | Login | Tela de autenticação com email/senha, validação JWT, contexto de auth, rotas protegidas |
+| 3 | Tema MUI | Configurar tema com cores e tipografia do design system |
+| 4 | Layout Base | AppBar + BottomNav + estrutura de rotas |
+| 5 | Dashboard | Componentes da Home (cards, tabela, gráfico) |
+| 6 | Lista de Despesas | Tabela com busca, filtros, paginação |
+| 7 | Nova Despesa | Formulário com validação |
+| 8 | Relatórios | Gráficos e tabela de análise |
+| 9 | Apollo Client | Conectar a API .NET (GraphQL) |
+| 10 | GraphQL Queries | Queries e mutations reais |
 
 ## Convenções de Código
 
@@ -131,6 +134,18 @@ npm run lint
 # TypeScript check
 npx tsc --noEmit
 ```
+
+## Decisões Pendentes
+
+- **Local do projeto React:** Recomendo subpasta (`./frontend/` ou `./web/`) para manter HTMLs originais intactos como referência.
+
+## Próxima Sessão
+
+1. Confirmar local do projeto (raiz vs subpasta)
+2. Rodar `npm create vite@latest` com template React + TypeScript
+3. Instalar dependências: MUI, Apollo Client, React Router, Emotion
+4. Estruturar pastas iniciais
+5. Criar tela de Login com JWT
 
 ---
 
