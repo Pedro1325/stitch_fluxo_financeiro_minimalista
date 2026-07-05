@@ -6,16 +6,20 @@
 
 **Em migração:** HTML + CSS + Tailwind → React + TypeScript + Material UI + Apollo Client
 
-## Stack (Destino)
+## Stack
 
 | Camada | Tecnologia |
 |--------|-----------|
-| Frontend | React 18 + TypeScript |
-| UI | Material UI (MUI) v5 |
-| Estado Global | Apollo Client (GraphQL) |
-| Build | Vite |
-| API | .NET (C#) — a ser definida |
-| Roteamento | React Router DOM v6 |
+| Frontend | React 19 + TypeScript 6 |
+| UI | Material UI (MUI) v9 |
+| Dados (server state) | Apollo Client v4 (GraphQL) |
+| Build | Vite 8 |
+| Lint | oxlint |
+| API | .NET (C#) + HotChocolate (GraphQL) — a construir |
+| Roteamento | React Router DOM v7 |
+| Node | v24 (ver `.nvmrc` — rode `nvm use` na raiz) |
+
+> **Nota:** Apollo Client gerencia *estado de servidor* (dados vindos da API, com cache). Estado de UI (modais, filtros locais) fica em `useState`/contexto — são responsabilidades diferentes.
 
 ## Estrutura de Pastas (Alvo)
 
@@ -95,21 +99,20 @@ Princípios:
 ## Plano de Migração (Passo a Passo)
 
 Cada passo será feito sob demanda, explicando decisões de arquitetura antes de codificar.
+Autenticação fica por último de propósito: implementar JWT sem backend real seria teatro — ela entra quando existe API e dados de verdade para proteger.
 
-| # | Passo | Descrição |
-|---|-------|-----------|
-| # | Passo | Descrição |
-|---|-------|-----------|
-| 1 | Setup | Criar projeto Vite + React + TS, instalar dependências (MUI, Apollo, React Router) |
-| 2 | Login | Tela de autenticação com email/senha, validação JWT, contexto de auth, rotas protegidas |
-| 3 | Tema MUI | Configurar tema com cores e tipografia do design system |
-| 4 | Layout Base | AppBar + BottomNav + estrutura de rotas |
-| 5 | Dashboard | Componentes da Home (cards, tabela, gráfico) |
-| 6 | Lista de Despesas | Tabela com busca, filtros, paginação |
-| 7 | Nova Despesa | Formulário com validação |
-| 8 | Relatórios | Gráficos e tabela de análise |
-| 9 | Apollo Client | Conectar a API .NET (GraphQL) |
-| 10 | GraphQL Queries | Queries e mutations reais |
+| # | Passo | Descrição | Status |
+|---|-------|-----------|--------|
+| 1 | Setup | Projeto Vite + React + TS em `frontend/`, dependências (MUI, Apollo, Router), `.nvmrc` | ✅ |
+| 2 | Tema MUI | Configurar tema com cores e tipografia do design system (Precision Ledger) | |
+| 3 | Layout Base | AppBar + BottomNav + estrutura de rotas | |
+| 4 | Dashboard | Componentes da Home (cards, tabela, gráfico) — dados mockados | |
+| 5 | Lista de Despesas | Tabela com busca, filtros, paginação — dados mockados | |
+| 6 | Nova Despesa | Formulário com validação | |
+| 7 | Relatórios | Gráficos e tabela de análise | |
+| 8 | API .NET | Projeto C# + HotChocolate, modelagem (Expense, Category), queries/mutations | |
+| 9 | Integração | Apollo Client apontando pra API real, remover mocks | |
+| 10 | Autenticação | Login, JWT/refresh token, contexto de auth, rotas protegidas | |
 
 ## Convenções de Código
 
@@ -122,6 +125,10 @@ Cada passo será feito sob demanda, explicando decisões de arquitetura antes de
 ## Comandos Úteis
 
 ```bash
+# Na raiz do repositório: usar a versão de Node do projeto
+nvm use
+
+# Dentro de frontend/
 # Iniciar servidor de desenvolvimento
 npm run dev
 
@@ -135,17 +142,17 @@ npm run lint
 npx tsc --noEmit
 ```
 
-## Decisões Pendentes
+## Decisões Tomadas
 
-- **Local do projeto React:** Recomendo subpasta (`./frontend/` ou `./web/`) para manter HTMLs originais intactos como referência.
+- **Local do projeto React:** subpasta `./frontend/`; HTMLs do Stitch mantidos em `pages/` como referência de design.
+- **GraphQL + Apollo:** escolha consciente com objetivo de aprendizado (a alternativa mais simples seria REST + TanStack Query).
+- **MUI v9** com tema customizado para o design system Precision Ledger.
+- **Node 24** fixado via `.nvmrc` (Node 18 está em EOL).
 
 ## Próxima Sessão
 
-1. Confirmar local do projeto (raiz vs subpasta)
-2. Rodar `npm create vite@latest` com template React + TypeScript
-3. Instalar dependências: MUI, Apollo Client, React Router, Emotion
-4. Estruturar pastas iniciais
-5. Criar tela de Login com JWT
+1. Passo 2: criar tema MUI (`frontend/src/theme/`) a partir do `DESIGN.md`
+2. Limpar boilerplate do template Vite (`App.tsx`, CSS de exemplo)
 
 ---
 

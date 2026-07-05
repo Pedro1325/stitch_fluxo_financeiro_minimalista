@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinanceFlow — Painel</title>
+
+  <!--
+    Tailwind via CDN: adequado para PROTÓTIPO (zero build, abre direto no
+    navegador). Em produção nunca se usa o CDN — o build do projeto React
+    gerará apenas o CSS realmente utilizado.
+    A ordem importa: o CDN precisa carregar ANTES do nosso tema.
+  -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script src="assets/tailwind-config.js"></script>
+
+  <!--
+    CODE SMELL REMOVIDO: o export original tinha o MESMO <link> de fontes
+    duplicado. Aqui: um link para as fontes de texto, outro para os ícones.
+  -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="assets/theme.css" />
+</head>
+
+<!--
+  data-page: diz ao app.js qual item da navegação marcar como ativo.
+  data-shell="completo": esta página recebe header + nav inferior + FAB.
+  pb-24 no mobile: espaço para a navegação inferior fixa não cobrir conteúdo.
+-->
+<body data-page="inicio" data-shell="completo" class="bg-background min-h-screen pb-24 md:pb-0">
+
+  <main class="max-w-container-max mx-auto px-lg py-xl">
+
+    <!-- ============================================================ -->
+    <!-- Saudação + filtro de período                                  -->
+    <!-- ============================================================ -->
+    <section class="flex flex-col md:flex-row md:items-end justify-between mb-3xl gap-lg animate-fade-in">
+      <div>
+        <span class="text-label-caps uppercase text-outline">Visão geral</span>
+        <h1 class="text-display-lg mt-base">Bem-vindo de volta, Pedro</h1>
+      </div>
+
+      <!--
+        Controle segmentado de período. No protótipo só o visual;
+        no React cada botão mudará o estado do filtro (useState) e
+        refará a query de dados do período.
+      -->
+      <div class="flex items-center bg-surface-container-low rounded-full p-base" role="group" aria-label="Filtro de período">
+        <button type="button" class="px-lg py-xs text-label-caps uppercase bg-surface text-primary rounded-full active-pill border border-outline-variant/30">Este mês</button>
+        <button type="button" class="px-lg py-xs text-label-caps uppercase text-on-surface-variant hover:text-primary transition-colors">Mês passado</button>
+        <button type="button" class="px-lg py-xs text-label-caps uppercase text-on-surface-variant hover:text-primary transition-colors">Anual</button>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- Resumo em "bento grid": saldo + quebra pessoal/empresa        -->
+    <!-- 12 colunas no desktop: 6 (saldo) + 3 + 3 (categorias de uso)  -->
+    <!-- ============================================================ -->
+    <section class="grid grid-cols-1 md:grid-cols-12 gap-lg mb-3xl animate-fade-in">
+
+      <!-- Cartão principal de saldo: único cartão com fundo primário,
+           dando a ele o maior peso visual da tela -->
+      <div class="md:col-span-6 bg-primary text-on-primary p-xl rounded-xl flex flex-col justify-between min-h-[220px] relative overflow-hidden">
+        <div class="relative z-10">
+          <p class="text-label-caps uppercase text-on-primary-container/80 mb-sm">Saldo total</p>
+          <p class="text-display-lg text-4xl font-mono">R$ 42.580,00</p>
+        </div>
+        <div class="relative z-10 flex items-center gap-xs text-secondary-fixed">
+          <span class="material-symbols-outlined icon-filled text-[18px]" aria-hidden="true">trending_up</span>
+          <span class="font-mono text-mono-data">+12,5% em relação ao mês anterior</span>
+        </div>
+        <!-- Elemento decorativo: círculo desfocado dá profundidade sem poluir -->
+        <div class="absolute -right-12 -bottom-12 w-48 h-48 bg-white/10 rounded-full blur-3xl" aria-hidden="true"></div>
+      </div>
+
+      <!-- Gastos pessoais: barra de progresso = % do orçamento consumido -->
+      <div class="md:col-span-3 bg-surface card-border p-xl rounded-xl flex flex-col justify-between">
+        <div>
+          <div class="flex justify-between items-start mb-sm">
+            <p class="text-label-caps uppercase text-outline">Pessoal</p>
+            <span class="material-symbols-outlined text-outline" aria-hidden="true">person</span>
+          </div>
+          <p class="text-headline-md font-mono">R$ 12.430,20</p>
+        </div>
+        <div class="w-full bg-surface-container rounded-full h-1 mt-md" role="progressbar" aria-label="Orçamento pessoal utilizado" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">
+          <!-- width inline é aceitável aqui: é um VALOR DE DADO (45% do orçamento), não estilo fixo -->
+          <div class="bg-primary h-1 rounded-full" style="width: 45%"></div>
+        </div>
+      </div>
+
+      <!-- Gastos da empresa -->
+      <div class="md:col-span-3 bg-surface card-border p-xl rounded-xl flex flex-col justify-between">
+        <div>
+          <div class="flex justify-between items-start mb-sm">
+            <p class="text-label-caps uppercase text-outline">Empresa</p>
+            <span class="material-symbols-outlined text-outline" aria-hidden="true">business_center</span>
+          </div>
+          <p class="text-headline-md font-mono">R$ 28.149,80</p>
+        </div>
+        <div class="w-full bg-surface-container rounded-full h-1 mt-md" role="progressbar" aria-label="Orçamento da empresa utilizado" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100">
+          <div class="bg-secondary h-1 rounded-full" style="width: 72%"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- Duas colunas: transações recentes (2/3) + widgets (1/3)       -->
+    <!-- ============================================================ -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-3xl">
+
+      <!-- Transações recentes -->
+      <section class="lg:col-span-2 animate-fade-in">
+        <div class="flex justify-between items-center mb-lg">
+          <h2 class="text-title-sm">Transações recentes</h2>
+          <a href="despesas.html" class="text-primary text-label-caps uppercase hover:underline">Ver todas</a>
+        </div>
+
+        <div class="bg-surface rounded-xl overflow-hidden card-border">
+          <!--
+            Tabela semântica de verdade (<table>): dados tabulares DEVEM
+            usar tabela — leitores de tela navegam por linha/coluna.
+            Valores em fonte mono para os dígitos alinharem verticalmente.
+          -->
+          <table class="w-full text-left border-collapse">
+            <thead class="bg-surface-container-low">
+              <tr>
+                <th scope="col" class="px-lg py-md text-label-caps uppercase text-outline">Estabelecimento</th>
+                <th scope="col" class="px-lg py-md text-label-caps uppercase text-outline">Categoria</th>
+                <th scope="col" class="px-lg py-md text-label-caps uppercase text-outline">Data</th>
+                <th scope="col" class="px-lg py-md text-label-caps uppercase text-outline text-right">Valor</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-outline-variant">
+
+              <tr class="hover:bg-surface-container-low transition-colors">
+                <td class="px-lg py-md">
+                  <div class="flex items-center gap-md">
+                    <div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center">
+                      <span class="material-symbols-outlined text-on-surface-variant" aria-hidden="true">shopping_bag</span>
+                    </div>
+                    <span class="text-body-md">Apple Store</span>
+                  </div>
+                </td>
+                <td class="px-lg py-md">
+                  <span class="px-sm py-1 bg-surface-container-high rounded-full text-label-caps text-[10px] uppercase text-outline">Eletrônicos</span>
+                </td>
+                <td class="px-lg py-md font-mono text-mono-data text-outline">12/06/2026</td>
+                <td class="px-lg py-md text-right font-mono text-mono-data font-bold">−R$ 1.299,00</td>
+              </tr>
+
+              <tr class="hover:bg-surface-container-low transition-colors">
+                <td class="px-lg py-md">
+                  <div class="flex items-center gap-md">
+                    <div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center">
+                      <span class="material-symbols-outlined text-on-surface-variant" aria-hidden="true">restaurant</span>
+                    </div>
+                    <span class="text-body-md">Mizu Sushi</span>
+                  </div>
+                </td>
+                <td class="px-lg py-md">
+                  <span class="px-sm py-1 bg-surface-container-high rounded-full text-label-caps text-[10px] uppercase text-outline">Alimentação</span>
+                </td>
+                <td class="px-lg py-md font-mono text-mono-data text-outline">11/06/2026</td>
+                <td class="px-lg py-md text-right font-mono text-mono-data font-bold">−R$ 84,50</td>
+              </tr>
+
+              <tr class="hover:bg-surface-container-low transition-colors">
+                <td class="px-lg py-md">
+                  <div class="flex items-center gap-md">
+                    <div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center">
+                      <span class="material-symbols-outlined text-on-surface-variant" aria-hidden="true">flight</span>
+                    </div>
+                    <span class="text-body-md">LATAM Airlines</span>
+                  </div>
+                </td>
+                <td class="px-lg py-md">
+                  <span class="px-sm py-1 bg-surface-container-high rounded-full text-label-caps text-[10px] uppercase text-outline">Viagem</span>
+                </td>
+                <td class="px-lg py-md font-mono text-mono-data text-outline">10/06/2026</td>
+                <td class="px-lg py-md text-right font-mono text-mono-data font-bold">−R$ 450,00</td>
+              </tr>
+
+              <!-- Receita: verde semântico diferencia entrada de saída -->
+              <tr class="hover:bg-surface-container-low transition-colors">
+                <td class="px-lg py-md">
+                  <div class="flex items-center gap-md">
+                    <div class="w-10 h-10 rounded-lg bg-secondary-container/20 flex items-center justify-center">
+                      <span class="material-symbols-outlined text-secondary" aria-hidden="true">payments</span>
+                    </div>
+                    <span class="text-body-md">Salário</span>
+                  </div>
+                </td>
+                <td class="px-lg py-md">
+                  <span class="px-sm py-1 bg-secondary-container/30 rounded-full text-label-caps text-[10px] uppercase text-secondary">Receita</span>
+                </td>
+                <td class="px-lg py-md font-mono text-mono-data text-outline">01/06/2026</td>
+                <td class="px-lg py-md text-right font-mono text-mono-data font-bold text-secondary">+R$ 8.500,00</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Coluna lateral: gráfico de categorias + atalho para relatório -->
+      <aside class="flex flex-col gap-3xl animate-fade-in">
+
+        <section>
+          <h2 class="text-title-sm mb-lg">Gastos por categoria</h2>
+          <div class="bg-surface p-xl rounded-xl card-border flex flex-col items-center">
+
+            <!--
+              Gráfico de rosca em SVG puro — como funciona:
+              cada <path> é o MESMO círculo; stroke-dasharray "45, 100"
+              desenha só 45% do contorno, e stroke-dashoffset desloca o
+              início do arco para a fatia começar onde a anterior parou
+              (45% azul → 25% verde a partir de -45 → 15% vermelho a
+              partir de -70). O -rotate-90 põe o início no topo.
+              No React isso virará um componente <DonutChart data={...} />.
+            -->
+            <div class="relative w-48 h-48 mb-lg" role="img" aria-label="Gráfico: Empresa 45%, Estilo de vida 25%, Viagem 15%, Outros 15%">
+              <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36" aria-hidden="true">
+                <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      fill="none" stroke="#e1e3e4" stroke-width="3" />
+                <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      fill="none" stroke="#004ac6" stroke-dasharray="45, 100" stroke-width="3" />
+                <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      fill="none" stroke="#006c49" stroke-dasharray="25, 100" stroke-dashoffset="-45" stroke-width="3" />
+                <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      fill="none" stroke="#ab0b1c" stroke-dasharray="15, 100" stroke-dashoffset="-70" stroke-width="3" />
+              </svg>
+              <!-- Total no centro da rosca -->
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <span class="text-label-caps text-[10px] uppercase text-outline">Total</span>
+                <span class="text-title-sm font-mono">R$ 40,5 mil</span>
+              </div>
+            </div>
+
+            <!-- Legenda: a cor de cada bolinha corresponde ao stroke da fatia -->
+            <ul class="w-full grid grid-cols-2 gap-md list-none">
+              <li class="flex items-center gap-xs">
+                <span class="w-2 h-2 rounded-full bg-primary" aria-hidden="true"></span>
+                <span class="text-label-caps text-[10px] uppercase text-on-surface-variant">Empresa</span>
+              </li>
+              <li class="flex items-center gap-xs">
+                <span class="w-2 h-2 rounded-full bg-secondary" aria-hidden="true"></span>
+                <span class="text-label-caps text-[10px] uppercase text-on-surface-variant">Estilo de vida</span>
+              </li>
+              <li class="flex items-center gap-xs">
+                <span class="w-2 h-2 rounded-full bg-tertiary" aria-hidden="true"></span>
+                <span class="text-label-caps text-[10px] uppercase text-on-surface-variant">Viagem</span>
+              </li>
+              <li class="flex items-center gap-xs">
+                <span class="w-2 h-2 rounded-full bg-outline-variant" aria-hidden="true"></span>
+                <span class="text-label-caps text-[10px] uppercase text-on-surface-variant">Outros</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!--
+          Atalho contextual. O original era um promo sem função ("cartão
+          virtual") — trocado por um atalho real do fluxo: ver o relatório
+          do mês. Todo elemento da tela precisa ter um PORQUÊ.
+        -->
+        <a href="relatorios.html"
+           class="bg-surface-container-high rounded-xl p-lg flex items-center gap-lg hover:bg-surface-container-highest transition-colors">
+          <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0">
+            <span class="material-symbols-outlined text-primary" aria-hidden="true">analytics</span>
+          </div>
+          <div>
+            <p class="text-body-sm font-semibold">Relatório de junho disponível</p>
+            <p class="text-label-caps text-[10px] uppercase text-outline mt-1">Ver análise completa</p>
+          </div>
+        </a>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Injeta header, navegação inferior e FAB compartilhados -->
+  <script src="assets/app.js"></script>
+</body>
+</html>

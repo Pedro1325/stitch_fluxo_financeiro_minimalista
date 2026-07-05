@@ -1,0 +1,83 @@
+/*
+ * theme.css — estilos globais compartilhados por todas as telas.
+ *
+ * Regra de organização: aqui só entra o que NÃO dá para expressar com
+ * classes utilitárias do Tailwind (fontes de ícone, animações, scrollbar)
+ * ou o que se repete em toda página (estilo base do body).
+ * Estilo específico de UMA tela fica na própria tela.
+ */
+
+body {
+  background-color: #f8f9fa; /* Level 0 do design system: o "canvas" */
+  color: #191c1d;
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased; /* deixa a Inter mais nítida no macOS/webkit */
+}
+
+/*
+ * Ícones Material Symbols são uma FONTE variável: o nome do ícone é o
+ * texto do elemento, e estas font-variation-settings controlam o traço.
+ * FILL 0 = contorno (padrão do nosso design, mais leve visualmente).
+ */
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  display: inline-block;
+  line-height: 1;
+  vertical-align: middle;
+  white-space: nowrap;
+  direction: ltr;
+}
+
+/*
+ * Variante preenchida — usada para indicar o item ATIVO na navegação.
+ * CODE SMELL REMOVIDO: o export original repetia
+ * style="font-variation-settings: 'FILL' 1" inline em vários lugares;
+ * uma classe reutilizável elimina a repetição.
+ */
+.icon-filled {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+/*
+ * Elevação nível 1 (ver DESIGN.md): cartões usam BORDA de 1px em vez de
+ * sombra — mantém o visual minimalista "Stripe-like".
+ */
+.card-border {
+  border: 1px solid #e5e7eb;
+}
+
+/* Entrada suave de seções ao carregar a página */
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scrollbar fina e discreta, coerente com o minimalismo do design */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #e1e3e4;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c3c6d7;
+}
+
+/* Sombra sutil da "pílula" ativa nos controles segmentados (filtros) */
+.active-pill {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
