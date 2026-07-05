@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinanceFlow — Perfil</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script src="assets/tailwind-config.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/theme.css" />
+</head>
+
+<!--
+  TELA NOVA: "Perfil" existia na navegação inferior mas não tinha tela.
+  Conteúdo: identidade do usuário + configurações da conta. Estrutura de
+  lista de configurações é padrão consolidado — o usuário já conhece.
+-->
+<body data-page="perfil" data-shell="completo" class="bg-background min-h-screen pb-24 md:pb-0">
+
+  <main class="max-w-[640px] mx-auto px-lg py-xl">
+
+    <!-- Identidade: avatar de iniciais grande + nome + e-mail -->
+    <section class="flex flex-col items-center text-center mb-2xl animate-fade-in">
+      <div class="w-24 h-24 rounded-full bg-primary-fixed text-primary flex items-center justify-center
+                  text-headline-md font-bold border border-outline-variant mb-md" aria-hidden="true">
+        PH
+      </div>
+      <h1 class="text-headline-md">Pedro Henrique</h1>
+      <p class="text-body-sm text-outline font-mono">pedroh13022006@gmail.com</p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- Grupo: Conta                                                  -->
+    <!-- Cada item é um <a>/<button> de linha inteira — área de toque   -->
+    <!-- generosa (mínimo 44px) para uso no celular.                    -->
+    <!-- ============================================================ -->
+    <section class="mb-xl animate-fade-in">
+      <h2 class="text-label-caps uppercase text-outline mb-sm px-xs">Conta</h2>
+      <div class="bg-surface card-border rounded-xl divide-y divide-outline-variant overflow-hidden">
+
+        <a href="#" class="flex items-center justify-between px-lg py-md hover:bg-surface-container-low transition-colors">
+          <span class="flex items-center gap-md">
+            <span class="material-symbols-outlined text-on-surface-variant" aria-hidden="true">badge</span>
+            <span class="text-body-md">Dados pessoais</span>
+          </span>
+          <span class="material-symbols-outlined text-outline" aria-hidden="true">chevron_right</span>
+        </a>
+
+        <a href="#" class="flex items-center justify-between px-lg py-md hover:bg-surface-container-low transition-colors">
+          <span class="flex items-center gap-md">
+            <span class="material-symbols-outlined text-on-surface-variant" aria-hidden="true">lock</span>
+            <span class="text-body-md">Alterar senha</span>
+          </span>
+          <span class="material-symbols-outlined text-outline" aria-hidden="true">chevron_right</span>
+        </a>
+
+        <a href="#" class="flex items-center justify-between px-lg py-md hover:bg-surface-container-low transition-colors">
+          <span class="flex items-center gap-md">
+            <span class="material-symbols-outlined text-on-surface-variant" aria-hidden="true">notifications</span>
+            <span class="text-body-md">Notificações</span>
+          </span>
+          <span class="material-symbols-outlined text-outline" aria-hidden="true">chevron_right</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Grupo: Dados -->
+    <section class="mb-xl animate-fade-in">
+      <h2 class="text-label-caps uppercase text-outline mb-sm px-xs">Dados</h2>
+      <div class="bg-surface card-border rounded-xl divide-y divide-outline-variant overflow-hidden">
+
+        <a href="#" class="flex items-center justify-between px-lg py-md hover:bg-surface-container-low transition-colors">
+          <span class="flex items-center gap-md">
+            <span class="material-symbols-outlined text-on-surface-variant" aria-hidden="true">download</span>
+            <span class="text-body-md">Exportar meus dados</span>
+          </span>
+          <span class="material-symbols-outlined text-outline" aria-hidden="true">chevron_right</span>
+        </a>
+
+        <a href="categorias.html" class="flex items-center justify-between px-lg py-md hover:bg-surface-container-low transition-colors">
+          <span class="flex items-center gap-md">
+            <span class="material-symbols-outlined text-on-surface-variant" aria-hidden="true">category</span>
+            <span class="text-body-md">Gerenciar categorias</span>
+          </span>
+          <span class="material-symbols-outlined text-outline" aria-hidden="true">chevron_right</span>
+        </a>
+      </div>
+    </section>
+
+    <!--
+      Sair: ação destrutiva de sessão fica ISOLADA das demais e em
+      vermelho semântico — nunca misturada no meio da lista, para não
+      ser tocada por engano.
+    -->
+    <section class="animate-fade-in">
+      <div class="bg-surface card-border rounded-xl overflow-hidden">
+        <a href="login.html" class="flex items-center gap-md px-lg py-md text-error hover:bg-error-container/20 transition-colors">
+          <span class="material-symbols-outlined" aria-hidden="true">logout</span>
+          <span class="text-body-md font-semibold">Sair da conta</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Versão do app: ajuda no suporte ("qual versão você está usando?") -->
+    <p class="text-center text-label-caps text-[10px] uppercase text-outline mt-2xl">FinanceFlow — protótipo v0.1</p>
+  </main>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

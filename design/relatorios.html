@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinanceFlow — Relatórios</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script src="assets/tailwind-config.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/theme.css" />
+</head>
+
+<body data-page="relatorios" data-shell="completo" class="bg-background min-h-screen pb-24 md:pb-0">
+
+  <main class="max-w-container-max mx-auto px-lg py-xl pb-32">
+
+    <!-- ============================================================ -->
+    <!-- Título + alternador de período                                -->
+    <!-- ============================================================ -->
+    <section class="flex flex-col md:flex-row md:items-end justify-between gap-lg mb-2xl">
+      <div>
+        <h1 class="text-display-lg mb-base">Análise de gastos</h1>
+        <p class="text-body-md text-on-surface-variant">Visualize seus padrões de gasto por categoria.</p>
+      </div>
+
+      <!-- Mensal/Anual: mesma técnica de radios estilizados da tela
+           Nova Despesa — escolha exclusiva sem JavaScript -->
+      <fieldset>
+        <legend class="sr-only">Período do relatório</legend>
+        <div class="bg-surface-container-low p-base rounded-full grid grid-cols-2 gap-base border border-outline-variant w-fit">
+          <label class="cursor-pointer">
+            <input type="radio" name="periodo" value="mensal" class="peer sr-only" checked />
+            <span class="flex justify-center px-xl py-sm rounded-full text-label-caps uppercase transition-all
+                         text-on-surface-variant peer-checked:bg-primary peer-checked:text-on-primary">Mensal</span>
+          </label>
+          <label class="cursor-pointer">
+            <input type="radio" name="periodo" value="anual" class="peer sr-only" />
+            <span class="flex justify-center px-xl py-sm rounded-full text-label-caps uppercase transition-all
+                         text-on-surface-variant peer-checked:bg-primary peer-checked:text-on-primary">Anual</span>
+          </label>
+        </div>
+      </fieldset>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- Bento grid: gráfico (8 col) + resumo (4 col) + tabela (12)    -->
+    <!-- ============================================================ -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+
+      <!-- Gráfico de barras comparativo -->
+      <section class="lg:col-span-8 bg-surface border border-outline-variant rounded-xl p-xl">
+        <div class="flex justify-between items-start mb-xl">
+          <div>
+            <h2 class="text-title-sm">Comparativo de gastos</h2>
+            <p class="text-body-sm text-on-surface-variant">Alocação por categoria no período atual</p>
+          </div>
+          <!-- Verde: gastar MENOS que o mês passado é positivo -->
+          <div class="flex items-center gap-xs text-secondary">
+            <span class="material-symbols-outlined icon-filled text-sm" aria-hidden="true">trending_down</span>
+            <span class="font-mono text-mono-data">−12,4% vs mês anterior</span>
+          </div>
+        </div>
+
+        <!--
+          Gráfico de barras em CSS puro — cada barra é uma coluna flex
+          com altura proporcional ao gasto (height inline = dado, não
+          estilo). O tooltip aparece no hover via group-hover.
+          No React isto vira <BarChart data={...} /> com a mesma técnica
+          ou uma lib de gráficos.
+          role="img" + aria-label: leitores de tela recebem o RESUMO dos
+          dados em vez de tentar ler div por div.
+        -->
+        <div class="h-64 flex items-end justify-between gap-md pt-md"
+             role="img"
+             aria-label="Gráfico de barras: Moradia R$ 4.250, Alimentação R$ 2.100, Transporte R$ 3.000, Saúde R$ 1.500, Contas R$ 2.500, Lazer R$ 1.200">
+
+          <div class="flex flex-col items-center gap-sm group flex-1" aria-hidden="true">
+            <div class="w-full bg-primary-container/20 rounded-t-lg relative flex items-end h-full">
+              <div class="w-full bg-primary rounded-t-lg transition-all duration-700 hover:opacity-80" style="height: 85%"></div>
+              <span class="absolute -top-xs left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity
+                           bg-inverse-surface text-inverse-on-surface px-xs py-1 rounded text-xs font-mono">R$ 4.250</span>
+            </div>
+            <span class="text-label-caps text-[10px] uppercase text-on-surface-variant">Moradia</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-sm group flex-1" aria-hidden="true">
+            <div class="w-full bg-primary-container/20 rounded-t-lg relative flex items-end h-full">
+              <div class="w-full bg-primary rounded-t-lg transition-all duration-700 hover:opacity-80" style="height: 42%"></div>
+              <span class="absolute -top-xs left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity
+                           bg-inverse-surface text-inverse-on-surface px-xs py-1 rounded text-xs font-mono">R$ 2.100</span>
+            </div>
+            <span class="text-label-caps text-[10px] uppercase text-on-surface-variant">Alimentação</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-sm group flex-1" aria-hidden="true">
+            <div class="w-full bg-primary-container/20 rounded-t-lg relative flex items-end h-full">
+              <div class="w-full bg-primary rounded-t-lg transition-all duration-700 hover:opacity-80" style="height: 60%"></div>
+              <span class="absolute -top-xs left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity
+                           bg-inverse-surface text-inverse-on-surface px-xs py-1 rounded text-xs font-mono">R$ 3.000</span>
+            </div>
+            <span class="text-label-caps text-[10px] uppercase text-on-surface-variant">Transporte</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-sm group flex-1" aria-hidden="true">
+            <div class="w-full bg-primary-container/20 rounded-t-lg relative flex items-end h-full">
+              <div class="w-full bg-primary rounded-t-lg transition-all duration-700 hover:opacity-80" style="height: 30%"></div>
+              <span class="absolute -top-xs left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity
+                           bg-inverse-surface text-inverse-on-surface px-xs py-1 rounded text-xs font-mono">R$ 1.500</span>
+            </div>
+            <span class="text-label-caps text-[10px] uppercase text-on-surface-variant">Saúde</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-sm group flex-1" aria-hidden="true">
+            <div class="w-full bg-primary-container/20 rounded-t-lg relative flex items-end h-full">
+              <div class="w-full bg-primary rounded-t-lg transition-all duration-700 hover:opacity-80" style="height: 50%"></div>
+              <span class="absolute -top-xs left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity
+                           bg-inverse-surface text-inverse-on-surface px-xs py-1 rounded text-xs font-mono">R$ 2.500</span>
+            </div>
+            <span class="text-label-caps text-[10px] uppercase text-on-surface-variant">Contas</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-sm group flex-1" aria-hidden="true">
+            <div class="w-full bg-primary-container/20 rounded-t-lg relative flex items-end h-full">
+              <div class="w-full bg-primary rounded-t-lg transition-all duration-700 hover:opacity-80" style="height: 24%"></div>
+              <span class="absolute -top-xs left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity
+                           bg-inverse-surface text-inverse-on-surface px-xs py-1 rounded text-xs font-mono">R$ 1.200</span>
+            </div>
+            <span class="text-label-caps text-[10px] uppercase text-on-surface-variant">Lazer</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Coluna de resumo: saída total + previsão -->
+      <div class="lg:col-span-4 flex flex-col gap-lg">
+
+        <!-- Saída total com progresso do orçamento -->
+        <section class="bg-primary text-on-primary rounded-xl p-xl h-full flex flex-col justify-between">
+          <div>
+            <span class="text-label-caps uppercase opacity-80">Saída total</span>
+            <p class="text-display-lg mt-xs font-mono">R$ 14.550,00</p>
+          </div>
+          <div class="mt-xl">
+            <div class="flex justify-between text-body-sm mb-xs">
+              <span>Orçamento mensal</span>
+              <span class="font-mono">92% usado</span>
+            </div>
+            <div class="w-full bg-white/20 h-2 rounded-full overflow-hidden"
+                 role="progressbar" aria-label="Orçamento mensal utilizado"
+                 aria-valuenow="92" aria-valuemin="0" aria-valuemax="100">
+              <div class="bg-secondary-fixed h-full" style="width: 92%"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Previsão do próximo mês -->
+        <section class="bg-surface border border-outline-variant rounded-xl p-xl flex items-center justify-between">
+          <div>
+            <p class="text-label-caps uppercase text-on-surface-variant mb-xs">Previsão próximo mês</p>
+            <p class="text-title-sm text-primary font-mono">R$ 13.200,00</p>
+          </div>
+          <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary" aria-hidden="true">auto_graph</span>
+          </div>
+        </section>
+      </div>
+
+      <!-- ========================================================== -->
+      <!-- Detalhamento por categoria (tabela)                         -->
+      <!-- ========================================================== -->
+      <section class="lg:col-span-12 bg-surface border border-outline-variant rounded-xl overflow-hidden">
+        <div class="px-xl py-lg border-b border-outline-variant flex justify-between items-center bg-surface-container-lowest">
+          <h2 class="text-title-sm">Detalhamento por categoria</h2>
+          <button type="button" class="flex items-center gap-sm text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-sm" aria-hidden="true">filter_list</span>
+            <span class="text-label-caps uppercase">Ordenar por valor</span>
+          </button>
+        </div>
+
+        <!-- overflow-x-auto: em telas estreitas a tabela rola na horizontal
+             em vez de quebrar o layout da página -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead class="bg-surface-container-low">
+              <tr>
+                <th scope="col" class="px-xl py-md text-label-caps uppercase text-on-surface-variant">Categoria</th>
+                <th scope="col" class="px-xl py-md text-label-caps uppercase text-on-surface-variant">Status</th>
+                <th scope="col" class="px-xl py-md text-label-caps uppercase text-on-surface-variant">Valor</th>
+                <th scope="col" class="px-xl py-md text-label-caps uppercase text-on-surface-variant text-right">Alocação</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-outline-variant">
+
+              <!-- Linha de categoria — no React: <CategoryRow /> num .map() -->
+              <tr class="hover:bg-surface-container-lowest transition-colors">
+                <td class="px-xl py-lg">
+                  <div class="flex items-center gap-md">
+                    <div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary">
+                      <span class="material-symbols-outlined text-base" aria-hidden="true">home</span>
+                    </div>
+                    <span class="text-body-md font-medium">Moradia e aluguel</span>
+                  </div>
+                </td>
+                <td class="px-xl py-lg">
+                  <!-- Status semântico: verde = dentro do orçamento -->
+                  <span class="inline-flex items-center px-sm py-0.5 rounded-full text-xs font-medium bg-secondary-container/30 text-on-secondary-container">No orçamento</span>
+                </td>
+                <td class="px-xl py-lg font-mono text-mono-data">R$ 4.250,00</td>
+                <td class="px-xl py-lg text-right">
+                  <div class="flex items-center justify-end gap-md">
+                    <div class="w-24 bg-surface-container-high h-1.5 rounded-full overflow-hidden"
+                         role="progressbar" aria-label="Participação de Moradia no total"
+                         aria-valuenow="29" aria-valuemin="0" aria-valuemax="100">
+                      <div class="bg-primary h-full" style="width: 29%"></div>
+                    </div>
+                    <span class="font-mono text-mono-data w-10">29%</span>
+                  </div>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-surface-container-lowest transition-colors">
+                <td class="px-xl py-lg">
+                  <div class="flex items-center gap-md">
+                    <div class="w-8 h-8 rounded bg-secondary/10 flex items-center justify-center text-secondary">
+                      <span class="material-symbols-outlined text-base" aria-hidden="true">restaurant</span>
+                    </div>
+                    <span class="text-body-md font-medium">Alimentação</span>
+                  </div>
+                </td>
+                <td class="px-xl py-lg">
+                  <!-- Vermelho semântico: estourou o orçamento -->
+                  <span class="inline-flex items-center px-sm py-0.5 rounded-full text-xs font-medium bg-tertiary-fixed/30 text-on-tertiary-fixed-variant">Acima do orçamento</span>
+                </td>
+                <td class="px-xl py-lg font-mono text-mono-data">R$ 2.100,00</td>
+                <td class="px-xl py-lg text-right">
+                  <div class="flex items-center justify-end gap-md">
+                    <div class="w-24 bg-surface-container-high h-1.5 rounded-full overflow-hidden"
+                         role="progressbar" aria-label="Participação de Alimentação no total"
+                         aria-valuenow="14" aria-valuemin="0" aria-valuemax="100">
+                      <div class="bg-primary h-full" style="width: 14%"></div>
+                    </div>
+                    <span class="font-mono text-mono-data w-10">14%</span>
+                  </div>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-surface-container-lowest transition-colors">
+                <td class="px-xl py-lg">
+                  <div class="flex items-center gap-md">
+                    <div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary">
+                      <span class="material-symbols-outlined text-base" aria-hidden="true">directions_car</span>
+                    </div>
+                    <span class="text-body-md font-medium">Transporte</span>
+                  </div>
+                </td>
+                <td class="px-xl py-lg">
+                  <span class="inline-flex items-center px-sm py-0.5 rounded-full text-xs font-medium bg-secondary-container/30 text-on-secondary-container">No orçamento</span>
+                </td>
+                <td class="px-xl py-lg font-mono text-mono-data">R$ 3.000,00</td>
+                <td class="px-xl py-lg text-right">
+                  <div class="flex items-center justify-end gap-md">
+                    <div class="w-24 bg-surface-container-high h-1.5 rounded-full overflow-hidden"
+                         role="progressbar" aria-label="Participação de Transporte no total"
+                         aria-valuenow="21" aria-valuemin="0" aria-valuemax="100">
+                      <div class="bg-primary h-full" style="width: 21%"></div>
+                    </div>
+                    <span class="font-mono text-mono-data w-10">21%</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- Botão de exportar: ação secundária da tela, ancorada no fim do
+         conteúdo (o original flutuava sobre a tabela, cobrindo dados) -->
+    <div class="flex justify-center mt-2xl">
+      <button type="button"
+              class="bg-inverse-surface text-inverse-on-surface px-3xl py-md rounded-full shadow-lg
+                     hover:bg-on-background transition-all active:scale-95 flex items-center gap-md">
+        <span class="material-symbols-outlined icon-filled" aria-hidden="true">picture_as_pdf</span>
+        <span class="text-label-caps uppercase">Exportar relatório em PDF</span>
+      </button>
+    </div>
+  </main>
+
+  <script src="assets/app.js"></script>
+  <script>
+    // Animação de entrada das barras: começa em 0 e cresce até a altura
+    // real. requestAnimationFrame garante que o navegador registrou a
+    // altura inicial antes de animar (sem ele, a transição não dispara).
+    window.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll("[role='img'] .bg-primary.rounded-t-lg").forEach((barra) => {
+        const alturaFinal = barra.style.height;
+        barra.style.height = "0%";
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            barra.style.height = alturaFinal;
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinanceFlow — Entrar</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script src="assets/tailwind-config.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/theme.css" />
+</head>
+
+<!--
+  TELA NOVA. data-shell="nenhum": login não recebe header nem navegação —
+  usuário não autenticado não tem para onde navegar.
+  A implementação real (JWT, rotas protegidas) é o ÚLTIMO passo do plano;
+  o design existe desde já para o fluxo completo estar validado.
+-->
+<body data-page="login" data-shell="nenhum" class="bg-background min-h-screen flex items-center justify-center px-md">
+
+  <main class="w-full max-w-[420px]">
+
+    <!-- Marca centralizada acima do cartão -->
+    <header class="text-center mb-2xl">
+      <h1 class="text-display-lg text-primary">FinanceFlow</h1>
+      <p class="text-body-md text-on-surface-variant mt-xs">Suas finanças na ponta do lápis.</p>
+    </header>
+
+    <!-- Cartão do formulário: elevação nível 1 (borda, sem sombra) -->
+    <section class="bg-surface-container-lowest card-border rounded-xl p-xl">
+      <h2 class="text-headline-md mb-lg">Entrar</h2>
+
+      <form class="space-y-lg" novalidate>
+
+        <div class="space-y-xs">
+          <label for="email" class="block text-body-sm font-semibold">E-mail</label>
+          <!--
+            autocomplete correto importa: "email" e "current-password"
+            permitem que gerenciadores de senha preencham os campos —
+            segurança e conveniência de graça.
+          -->
+          <input id="email" name="email" type="email" autocomplete="email"
+                 placeholder="voce@exemplo.com" required
+                 class="w-full px-md py-sm rounded-lg border border-outline-variant bg-white
+                        focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all
+                        placeholder:text-on-surface-variant/40" />
+        </div>
+
+        <div class="space-y-xs">
+          <div class="flex justify-between items-baseline">
+            <label for="senha" class="block text-body-sm font-semibold">Senha</label>
+            <a href="#" class="text-body-sm text-primary hover:underline">Esqueci minha senha</a>
+          </div>
+          <div class="relative">
+            <input id="senha" name="senha" type="password" autocomplete="current-password"
+                   placeholder="••••••••" required
+                   class="w-full px-md py-sm pr-2xl rounded-lg border border-outline-variant bg-white
+                          focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all
+                          placeholder:text-on-surface-variant/40" />
+            <!-- Alternar visibilidade da senha: reduz erro de digitação,
+                 padrão hoje em qualquer produto -->
+            <button type="button" id="alternar-senha" aria-label="Mostrar senha"
+                    class="absolute right-sm top-1/2 -translate-y-1/2 p-xs text-outline hover:text-primary transition-colors">
+              <span class="material-symbols-outlined text-[20px]" aria-hidden="true">visibility</span>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit"
+                class="w-full bg-primary text-on-primary py-md rounded-xl text-title-sm
+                       hover:bg-primary-container transition-all active:scale-[0.98] shadow-sm">
+          Entrar
+        </button>
+      </form>
+    </section>
+
+    <!-- Protótipo: atalho para navegar sem autenticação real -->
+    <p class="text-center text-body-sm text-outline mt-lg">
+      <a href="index.html" class="text-primary hover:underline">Ver painel (protótipo)</a>
+    </p>
+  </main>
+
+  <script>
+    /*
+     * Alternância de visibilidade da senha: troca o type do input e o
+     * ícone/rótulo do botão. No React isso vira um estado booleano
+     * (const [mostrar, setMostrar] = useState(false)).
+     */
+    const botaoAlternar = document.getElementById("alternar-senha");
+    const campoSenha = document.getElementById("senha");
+
+    botaoAlternar.addEventListener("click", () => {
+      const escondida = campoSenha.type === "password";
+      campoSenha.type = escondida ? "text" : "password";
+      botaoAlternar.setAttribute("aria-label", escondida ? "Ocultar senha" : "Mostrar senha");
+      botaoAlternar.querySelector("span").textContent = escondida ? "visibility_off" : "visibility";
+    });
+  </script>
+</body>
+</html>

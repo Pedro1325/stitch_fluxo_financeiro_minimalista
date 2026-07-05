@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinanceFlow — Nova Despesa</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script src="assets/tailwind-config.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/theme.css" />
+</head>
+
+<!--
+  data-shell="tarefa": tela focada em UMA tarefa (preencher o formulário).
+  O app.js injeta só um header compacto com botão de voltar — sem menu,
+  sem FAB. Menos distração = menos abandono de formulário.
+  pb-32: espaço para a barra fixa de "Salvar" não cobrir o fim do form.
+-->
+<body data-page="nova-despesa" data-shell="tarefa" data-title="Nova despesa" class="bg-background min-h-screen pb-32">
+
+  <!-- max-w-[640px]: formulário estreito lê melhor que largura total -->
+  <main class="max-w-[640px] mx-auto px-md py-xl">
+
+    <!-- ============================================================ -->
+    <!-- Alternador Pessoal/Empresa                                    -->
+    <!-- Semanticamente isto é um grupo de radio (escolha exclusiva),  -->
+    <!-- estilizado como controle segmentado. Usar <input radio> de    -->
+    <!-- verdade ganha de graça: navegação por teclado, estado no      -->
+    <!-- envio do form e acessibilidade — sem JavaScript nenhum.       -->
+    <!-- (O original recriava esse comportamento à mão com JS.)        -->
+    <!-- ============================================================ -->
+    <fieldset class="mb-xl">
+      <legend class="sr-only">Tipo da despesa</legend>
+      <div class="bg-surface-container-low p-base rounded-full grid grid-cols-2 gap-base">
+
+        <!-- peer: quando o radio (escondido) está marcado, o label muda de cor -->
+        <label class="cursor-pointer">
+          <input type="radio" name="tipo" value="pessoal" class="peer sr-only" checked />
+          <span class="flex justify-center py-sm rounded-full text-label-caps uppercase transition-all
+                       text-on-surface-variant
+                       peer-checked:bg-surface peer-checked:text-primary peer-checked:active-pill
+                       peer-checked:border peer-checked:border-outline-variant">
+            Pessoal
+          </span>
+        </label>
+
+        <label class="cursor-pointer">
+          <input type="radio" name="tipo" value="empresa" class="peer sr-only" />
+          <span class="flex justify-center py-sm rounded-full text-label-caps uppercase transition-all
+                       text-on-surface-variant
+                       peer-checked:bg-surface peer-checked:text-primary peer-checked:active-pill
+                       peer-checked:border peer-checked:border-outline-variant">
+            Empresa
+          </span>
+        </label>
+      </div>
+    </fieldset>
+
+    <!--
+      novalidate: desliga os balões de validação nativos do navegador —
+      no produto final a validação será nossa (mensagens no padrão visual
+      do app). Os atributos required/min ficam como documentação da regra.
+    -->
+    <form class="space-y-xl" novalidate>
+
+      <!-- ========================================================== -->
+      <!-- Valor em destaque: é o dado mais importante da tela         -->
+      <!-- ========================================================== -->
+      <div class="text-center py-xl bg-surface border border-outline-variant rounded-xl">
+        <label for="valor" class="block text-label-caps uppercase text-on-surface-variant mb-xs">Valor</label>
+        <div class="flex items-center justify-center">
+          <span class="text-display-lg text-on-surface-variant mr-xs" aria-hidden="true">R$</span>
+          <!--
+            CODE SMELL REMOVIDO: o original usava type="number", que é
+            errado para dinheiro — aceita "e" (notação científica),
+            spinners mudam o valor num scroll acidental, e não aceita
+            vírgula decimal brasileira. O padrão correto:
+            type="text" + inputmode="decimal" (abre teclado numérico no
+            celular) e a formatação/validação fica com a aplicação.
+          -->
+          <input id="valor" name="valor" type="text" inputmode="decimal" placeholder="0,00"
+                 autocomplete="off" required
+                 class="bg-transparent border-none focus:ring-0 text-display-lg text-primary
+                        w-48 text-center placeholder:text-surface-dim font-mono" />
+        </div>
+      </div>
+
+      <!-- Descrição -->
+      <div class="space-y-xs">
+        <label for="descricao" class="block text-title-sm">Descrição</label>
+        <input id="descricao" name="descricao" type="text" placeholder="Com o que foi esse gasto?" required
+               class="w-full px-md py-sm rounded-lg border border-outline-variant bg-surface
+                      focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all
+                      placeholder:text-on-surface-variant/40" />
+      </div>
+
+      <!-- Categoria e data lado a lado no desktop, empilhadas no mobile -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+
+        <div class="space-y-xs">
+          <label for="categoria" class="block text-title-sm">Categoria</label>
+          <div class="relative">
+            <!-- appearance-none esconde a seta nativa; a nossa (ícone) mantém o visual consistente entre navegadores -->
+            <select id="categoria" name="categoria" required
+                    class="w-full px-md py-sm rounded-lg border border-outline-variant bg-surface appearance-none
+                           focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all">
+              <option value="">Selecione a categoria</option>
+              <option value="alimentacao">Alimentação</option>
+              <option value="mercado">Mercado</option>
+              <option value="transporte">Transporte</option>
+              <option value="moradia">Moradia</option>
+              <option value="saude">Saúde</option>
+              <option value="lazer">Lazer</option>
+              <option value="equipamentos">Equipamentos</option>
+              <option value="software">Software e assinaturas</option>
+            </select>
+            <span class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant"
+                  aria-hidden="true">keyboard_arrow_down</span>
+          </div>
+        </div>
+
+        <div class="space-y-xs">
+          <label for="data" class="block text-title-sm">Data</label>
+          <!-- type="date" usa o seletor nativo — no celular é a melhor experiência possível -->
+          <input id="data" name="data" type="date" required
+                 class="w-full px-md py-sm rounded-lg border border-outline-variant bg-surface
+                        focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all" />
+        </div>
+      </div>
+
+      <!-- Observações (opcional) -->
+      <div class="space-y-xs">
+        <label for="observacoes" class="block text-title-sm">
+          Observações <span class="text-body-sm text-outline font-normal">(opcional)</span>
+        </label>
+        <textarea id="observacoes" name="observacoes" rows="4" placeholder="Notas ou contexto adicional..."
+                  class="w-full px-md py-sm rounded-lg border border-outline-variant bg-surface resize-none
+                         focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all
+                         placeholder:text-on-surface-variant/40"></textarea>
+      </div>
+
+      <!--
+        Anexo de comprovante. É um <label> ligado a um input file
+        escondido: clicar em qualquer ponto da área abre o seletor de
+        arquivo — sem nenhum JavaScript. (O original era um <div>
+        decorativo que não fazia nada.)
+      -->
+      <label for="comprovante"
+             class="border-2 border-dashed border-outline-variant rounded-xl p-xl flex flex-col items-center
+                    justify-center bg-surface-container-lowest hover:bg-surface-container-low
+                    transition-colors cursor-pointer group">
+        <input id="comprovante" name="comprovante" type="file" accept="image/*,.pdf" class="sr-only" />
+        <span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-[32px] mb-xs"
+              aria-hidden="true">attachment</span>
+        <span class="text-body-sm text-on-surface-variant">Anexar comprovante ou nota fiscal (opcional)</span>
+      </label>
+    </form>
+  </main>
+
+  <!-- ============================================================== -->
+  <!-- Barra de ação fixa: "Salvar" sempre visível, sem rolar a página -->
+  <!-- ============================================================== -->
+  <div class="fixed bottom-0 left-0 w-full bg-surface border-t border-outline-variant p-lg z-50">
+    <div class="max-w-[640px] mx-auto">
+      <button type="submit" form-target="form"
+              class="w-full bg-primary text-on-primary py-md rounded-xl text-title-sm
+                     hover:bg-primary-container transition-all active:scale-[0.98] shadow-sm">
+        Salvar despesa
+      </button>
+    </div>
+  </div>
+
+  <script src="assets/app.js"></script>
+  <script>
+    // Pré-preenche a data com hoje: o caso mais comum é registrar o
+    // gasto no dia em que ele aconteceu — menos um campo para digitar.
+    document.getElementById("data").valueAsDate = new Date();
+  </script>
+</body>
+</html>

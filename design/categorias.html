@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinanceFlow — Categorias</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script src="assets/tailwind-config.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/theme.css" />
+</head>
+
+<!--
+  TELA NOVA: a navegação original apontava para "Categorias", mas a tela
+  não existia. Papel dela no produto: cada categoria tem um ORÇAMENTO
+  mensal, e o cartão mostra quanto já foi consumido — é aqui que o
+  usuário percebe "estou estourando Alimentação" antes do fim do mês.
+-->
+<body data-page="categorias" data-shell="completo" class="bg-background min-h-screen pb-24 md:pb-0">
+
+  <main class="max-w-container-max mx-auto px-lg py-xl">
+
+    <section class="mb-2xl animate-fade-in">
+      <span class="text-label-caps uppercase text-outline">Organização</span>
+      <h1 class="text-display-lg mt-base">Categorias</h1>
+      <p class="text-body-md text-on-surface-variant mt-xs">Defina orçamentos por categoria e acompanhe o consumo do mês.</p>
+    </section>
+
+    <!--
+      Grade de cartões de categoria.
+      Cada cartão repete a mesma estrutura — no React vira UM componente
+      <CategoryCard nome orcamento gasto icone /> renderizado em .map().
+      A barra de progresso muda de cor conforme a regra semântica:
+      azul = consumo normal | vermelho = orçamento estourado.
+    -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-lg animate-fade-in">
+
+      <!-- Moradia: 71% do orçamento -->
+      <article class="bg-surface card-border rounded-xl p-xl hover:border-primary transition-colors cursor-pointer">
+        <div class="flex items-center justify-between mb-lg">
+          <div class="flex items-center gap-md">
+            <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined" aria-hidden="true">home</span>
+            </div>
+            <h2 class="text-title-sm">Moradia</h2>
+          </div>
+          <button type="button" aria-label="Editar categoria Moradia"
+                  class="p-xs rounded-full text-outline hover:bg-surface-container-low hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-[20px]" aria-hidden="true">edit</span>
+          </button>
+        </div>
+        <div class="flex items-baseline justify-between mb-xs">
+          <span class="font-mono text-headline-md">R$ 4.250,00</span>
+          <span class="text-body-sm text-outline">de R$ 6.000,00</span>
+        </div>
+        <div class="w-full bg-surface-container rounded-full h-1.5"
+             role="progressbar" aria-label="Orçamento de Moradia utilizado"
+             aria-valuenow="71" aria-valuemin="0" aria-valuemax="100">
+          <div class="bg-primary h-1.5 rounded-full" style="width: 71%"></div>
+        </div>
+        <p class="text-label-caps text-[10px] uppercase text-outline mt-sm">71% do orçamento usado</p>
+      </article>
+
+      <!-- Alimentação: ESTOUROU o orçamento → tudo em vermelho semântico -->
+      <article class="bg-surface card-border rounded-xl p-xl hover:border-primary transition-colors cursor-pointer">
+        <div class="flex items-center justify-between mb-lg">
+          <div class="flex items-center gap-md">
+            <div class="w-10 h-10 rounded-lg bg-tertiary/10 flex items-center justify-center text-tertiary">
+              <span class="material-symbols-outlined" aria-hidden="true">restaurant</span>
+            </div>
+            <h2 class="text-title-sm">Alimentação</h2>
+          </div>
+          <button type="button" aria-label="Editar categoria Alimentação"
+                  class="p-xs rounded-full text-outline hover:bg-surface-container-low hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-[20px]" aria-hidden="true">edit</span>
+          </button>
+        </div>
+        <div class="flex items-baseline justify-between mb-xs">
+          <span class="font-mono text-headline-md text-tertiary">R$ 2.100,00</span>
+          <span class="text-body-sm text-outline">de R$ 1.800,00</span>
+        </div>
+        <!-- Barra cheia + cor de alerta: a mensagem é imediata, sem ler nada -->
+        <div class="w-full bg-surface-container rounded-full h-1.5"
+             role="progressbar" aria-label="Orçamento de Alimentação utilizado"
+             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+          <div class="bg-tertiary h-1.5 rounded-full" style="width: 100%"></div>
+        </div>
+        <p class="text-label-caps text-[10px] uppercase text-tertiary mt-sm">17% acima do orçamento</p>
+      </article>
+
+      <!-- Transporte -->
+      <article class="bg-surface card-border rounded-xl p-xl hover:border-primary transition-colors cursor-pointer">
+        <div class="flex items-center justify-between mb-lg">
+          <div class="flex items-center gap-md">
+            <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined" aria-hidden="true">directions_car</span>
+            </div>
+            <h2 class="text-title-sm">Transporte</h2>
+          </div>
+          <button type="button" aria-label="Editar categoria Transporte"
+                  class="p-xs rounded-full text-outline hover:bg-surface-container-low hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-[20px]" aria-hidden="true">edit</span>
+          </button>
+        </div>
+        <div class="flex items-baseline justify-between mb-xs">
+          <span class="font-mono text-headline-md">R$ 3.000,00</span>
+          <span class="text-body-sm text-outline">de R$ 3.500,00</span>
+        </div>
+        <div class="w-full bg-surface-container rounded-full h-1.5"
+             role="progressbar" aria-label="Orçamento de Transporte utilizado"
+             aria-valuenow="86" aria-valuemin="0" aria-valuemax="100">
+          <div class="bg-primary h-1.5 rounded-full" style="width: 86%"></div>
+        </div>
+        <p class="text-label-caps text-[10px] uppercase text-outline mt-sm">86% do orçamento usado</p>
+      </article>
+
+      <!-- Saúde -->
+      <article class="bg-surface card-border rounded-xl p-xl hover:border-primary transition-colors cursor-pointer">
+        <div class="flex items-center justify-between mb-lg">
+          <div class="flex items-center gap-md">
+            <div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
+              <span class="material-symbols-outlined" aria-hidden="true">favorite</span>
+            </div>
+            <h2 class="text-title-sm">Saúde</h2>
+          </div>
+          <button type="button" aria-label="Editar categoria Saúde"
+                  class="p-xs rounded-full text-outline hover:bg-surface-container-low hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-[20px]" aria-hidden="true">edit</span>
+          </button>
+        </div>
+        <div class="flex items-baseline justify-between mb-xs">
+          <span class="font-mono text-headline-md">R$ 1.500,00</span>
+          <span class="text-body-sm text-outline">de R$ 2.000,00</span>
+        </div>
+        <div class="w-full bg-surface-container rounded-full h-1.5"
+             role="progressbar" aria-label="Orçamento de Saúde utilizado"
+             aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+          <div class="bg-primary h-1.5 rounded-full" style="width: 75%"></div>
+        </div>
+        <p class="text-label-caps text-[10px] uppercase text-outline mt-sm">75% do orçamento usado</p>
+      </article>
+
+      <!-- Lazer -->
+      <article class="bg-surface card-border rounded-xl p-xl hover:border-primary transition-colors cursor-pointer">
+        <div class="flex items-center justify-between mb-lg">
+          <div class="flex items-center gap-md">
+            <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined" aria-hidden="true">sports_esports</span>
+            </div>
+            <h2 class="text-title-sm">Lazer</h2>
+          </div>
+          <button type="button" aria-label="Editar categoria Lazer"
+                  class="p-xs rounded-full text-outline hover:bg-surface-container-low hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-[20px]" aria-hidden="true">edit</span>
+          </button>
+        </div>
+        <div class="flex items-baseline justify-between mb-xs">
+          <span class="font-mono text-headline-md">R$ 1.200,00</span>
+          <span class="text-body-sm text-outline">de R$ 1.500,00</span>
+        </div>
+        <div class="w-full bg-surface-container rounded-full h-1.5"
+             role="progressbar" aria-label="Orçamento de Lazer utilizado"
+             aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
+          <div class="bg-primary h-1.5 rounded-full" style="width: 80%"></div>
+        </div>
+        <p class="text-label-caps text-[10px] uppercase text-outline mt-sm">80% do orçamento usado</p>
+      </article>
+
+      <!--
+        Cartão de "nova categoria": borda tracejada sinaliza área de
+        criação (mesmo padrão do anexo em Nova Despesa) — consistência
+        de linguagem visual entre telas.
+      -->
+      <button type="button"
+              class="border-2 border-dashed border-outline-variant rounded-xl p-xl min-h-[176px]
+                     flex flex-col items-center justify-center gap-sm text-outline
+                     hover:border-primary hover:text-primary hover:bg-surface-container-lowest
+                     transition-colors group">
+        <span class="material-symbols-outlined text-[32px]" aria-hidden="true">add_circle</span>
+        <span class="text-label-caps uppercase">Nova categoria</span>
+      </button>
+    </section>
+  </main>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

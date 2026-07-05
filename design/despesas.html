@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinanceFlow — Despesas</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script src="assets/tailwind-config.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/theme.css" />
+</head>
+
+<body data-page="despesas" data-shell="completo" class="bg-background min-h-screen pb-24 md:pb-0">
+
+  <main class="max-w-container-max mx-auto px-lg py-xl">
+
+    <h1 class="text-display-lg mb-xl">Despesas</h1>
+
+    <!-- ============================================================ -->
+    <!-- Busca + filtro por tipo                                       -->
+    <!-- ============================================================ -->
+    <section class="mb-xl flex flex-col md:flex-row md:items-center justify-between gap-lg">
+
+      <!--
+        Campo de busca. type="search" (e não "text") dá semântica ao
+        campo e o botão nativo de limpar em vários navegadores.
+        O <label> existe para leitores de tela; sr-only o esconde
+        visualmente porque o ícone + placeholder já comunicam a função.
+      -->
+      <div class="relative w-full md:max-w-md">
+        <label for="busca-transacoes" class="sr-only">Buscar transações</label>
+        <span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline" aria-hidden="true">search</span>
+        <input id="busca-transacoes" type="search" placeholder="Buscar transações..."
+               class="w-full pl-xl pr-md py-sm bg-white border border-outline-variant rounded-xl
+                      focus:ring-2 focus:ring-primary focus:border-primary outline-none
+                      text-body-md transition-all" />
+      </div>
+
+      <!--
+        Filtro segmentado. data-filtro identifica cada botão para o
+        script — selecionar elementos por classe de ESTILO (como o
+        original fazia) é um smell: quebra na primeira mudança visual.
+        aria-pressed comunica o estado a leitores de tela.
+      -->
+      <div class="bg-surface-container-low p-base rounded-full flex items-center shadow-sm" role="group" aria-label="Filtrar por tipo">
+        <button type="button" data-filtro="todas" aria-pressed="true"
+                class="px-lg py-xs text-label-caps uppercase rounded-full text-primary font-bold bg-white active-pill transition-all">Todas</button>
+        <button type="button" data-filtro="pessoal" aria-pressed="false"
+                class="px-lg py-xs text-label-caps uppercase rounded-full text-on-surface-variant hover:text-primary transition-all">Pessoal</button>
+        <button type="button" data-filtro="empresa" aria-pressed="false"
+                class="px-lg py-xs text-label-caps uppercase rounded-full text-on-surface-variant hover:text-primary transition-all">Empresa</button>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- Lista de despesas                                             -->
+    <!-- Layout responsivo: grade de 6 colunas no desktop; no mobile   -->
+    <!-- cada item colapsa para 2 colunas (descrição + valor) e as     -->
+    <!-- infos secundárias viram uma sublinha ("Mercado • Pessoal").   -->
+    <!-- ============================================================ -->
+    <div class="bg-white rounded-xl border border-outline-variant overflow-hidden">
+
+      <!-- Cabeçalho das colunas (só desktop) -->
+      <div class="hidden md:grid grid-cols-6 px-lg py-md bg-surface-container-low border-b border-outline-variant">
+        <span class="col-span-1 text-label-caps uppercase text-outline">Data</span>
+        <span class="col-span-2 text-label-caps uppercase text-outline">Descrição</span>
+        <span class="col-span-1 text-label-caps uppercase text-outline">Categoria</span>
+        <span class="col-span-1 text-label-caps uppercase text-outline">Tipo</span>
+        <span class="col-span-1 text-label-caps uppercase text-outline text-right">Valor</span>
+      </div>
+
+      <div class="divide-y divide-outline-variant">
+
+        <!--
+          Item de despesa — este bloco se repete; no React ele vira UM
+          componente <ExpenseRow /> renderizado num .map() sobre os dados.
+          As classes order-* reordenam os elementos no mobile sem
+          duplicar HTML: data em cima, valor à direita, descrição embaixo.
+        -->
+        <article class="grid grid-cols-2 md:grid-cols-6 px-lg py-lg items-center gap-y-xs md:gap-y-0 hover:bg-surface-container-low transition-colors">
+          <span class="font-mono text-mono-data text-on-surface-variant order-1 md:order-none">24/06/2026</span>
+          <div class="col-span-2 order-3 md:order-none">
+            <p class="text-title-sm">Supermercado Zaffari</p>
+            <p class="md:hidden text-body-sm text-outline">Mercado • Pessoal</p>
+          </div>
+          <span class="hidden md:inline-flex w-fit px-sm py-[2px] bg-surface-container-high rounded-full text-label-caps text-[10px] uppercase text-on-surface-variant">Mercado</span>
+          <span class="hidden md:flex items-center gap-xs text-primary font-semibold text-body-sm">
+            <span class="w-2 h-2 rounded-full bg-primary" aria-hidden="true"></span> Pessoal
+          </span>
+          <span class="text-right font-mono text-title-sm order-2 md:order-none">−R$ 142,50</span>
+        </article>
+
+        <article class="grid grid-cols-2 md:grid-cols-6 px-lg py-lg items-center gap-y-xs md:gap-y-0 hover:bg-surface-container-low transition-colors">
+          <span class="font-mono text-mono-data text-on-surface-variant order-1 md:order-none">23/06/2026</span>
+          <div class="col-span-2 order-3 md:order-none">
+            <p class="text-title-sm">AWS Cloud Services</p>
+            <p class="md:hidden text-body-sm text-outline">Nuvem • Empresa</p>
+          </div>
+          <span class="hidden md:inline-flex w-fit px-sm py-[2px] bg-surface-container-high rounded-full text-label-caps text-[10px] uppercase text-on-surface-variant">Nuvem</span>
+          <span class="hidden md:flex items-center gap-xs text-outline font-semibold text-body-sm">
+            <span class="w-2 h-2 rounded-full bg-outline" aria-hidden="true"></span> Empresa
+          </span>
+          <span class="text-right font-mono text-title-sm order-2 md:order-none">−R$ 850,00</span>
+        </article>
+
+        <article class="grid grid-cols-2 md:grid-cols-6 px-lg py-lg items-center gap-y-xs md:gap-y-0 hover:bg-surface-container-low transition-colors">
+          <span class="font-mono text-mono-data text-on-surface-variant order-1 md:order-none">22/06/2026</span>
+          <div class="col-span-2 order-3 md:order-none">
+            <p class="text-title-sm">Café Cultura</p>
+            <p class="md:hidden text-body-sm text-outline">Alimentação • Pessoal</p>
+          </div>
+          <span class="hidden md:inline-flex w-fit px-sm py-[2px] bg-surface-container-high rounded-full text-label-caps text-[10px] uppercase text-on-surface-variant">Alimentação</span>
+          <span class="hidden md:flex items-center gap-xs text-primary font-semibold text-body-sm">
+            <span class="w-2 h-2 rounded-full bg-primary" aria-hidden="true"></span> Pessoal
+          </span>
+          <span class="text-right font-mono text-title-sm order-2 md:order-none">−R$ 6,75</span>
+        </article>
+
+        <article class="grid grid-cols-2 md:grid-cols-6 px-lg py-lg items-center gap-y-xs md:gap-y-0 hover:bg-surface-container-low transition-colors">
+          <span class="font-mono text-mono-data text-on-surface-variant order-1 md:order-none">21/06/2026</span>
+          <div class="col-span-2 order-3 md:order-none">
+            <p class="text-title-sm">Apple Store — MacBook</p>
+            <p class="md:hidden text-body-sm text-outline">Equipamentos • Empresa</p>
+          </div>
+          <span class="hidden md:inline-flex w-fit px-sm py-[2px] bg-surface-container-high rounded-full text-label-caps text-[10px] uppercase text-on-surface-variant">Equipamentos</span>
+          <span class="hidden md:flex items-center gap-xs text-outline font-semibold text-body-sm">
+            <span class="w-2 h-2 rounded-full bg-outline" aria-hidden="true"></span> Empresa
+          </span>
+          <span class="text-right font-mono text-title-sm order-2 md:order-none">−R$ 12.499,00</span>
+        </article>
+
+        <article class="grid grid-cols-2 md:grid-cols-6 px-lg py-lg items-center gap-y-xs md:gap-y-0 hover:bg-surface-container-low transition-colors">
+          <span class="font-mono text-mono-data text-on-surface-variant order-1 md:order-none">20/06/2026</span>
+          <div class="col-span-2 order-3 md:order-none">
+            <p class="text-title-sm">Uber</p>
+            <p class="md:hidden text-body-sm text-outline">Transporte • Pessoal</p>
+          </div>
+          <span class="hidden md:inline-flex w-fit px-sm py-[2px] bg-surface-container-high rounded-full text-label-caps text-[10px] uppercase text-on-surface-variant">Transporte</span>
+          <span class="hidden md:flex items-center gap-xs text-primary font-semibold text-body-sm">
+            <span class="w-2 h-2 rounded-full bg-primary" aria-hidden="true"></span> Pessoal
+          </span>
+          <span class="text-right font-mono text-title-sm order-2 md:order-none">−R$ 22,40</span>
+        </article>
+      </div>
+
+      <!-- Carregar mais: padrão de paginação incremental, bom para mobile -->
+      <div class="px-lg py-xl bg-surface-container-lowest flex justify-center">
+        <button type="button"
+                class="group flex items-center gap-sm px-xl py-md bg-white border border-outline-variant rounded-xl
+                       text-label-caps uppercase hover:bg-surface-container hover:border-primary
+                       transition-all active:scale-95 shadow-sm">
+          Carregar mais transações
+          <span class="material-symbols-outlined transition-transform group-hover:translate-y-1" aria-hidden="true">expand_more</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Resumo da paginação (desktop) -->
+    <div class="mt-lg flex justify-between items-center text-outline text-body-sm">
+      <span>Exibindo 1 a 5 de 124 transações</span>
+      <div class="flex items-center gap-sm">
+        <!-- disabled: estamos na primeira página, não há "anterior" -->
+        <button type="button" disabled aria-label="Página anterior"
+                class="p-xs rounded-lg hover:bg-surface-container-high disabled:opacity-30 disabled:cursor-not-allowed">
+          <span class="material-symbols-outlined" aria-hidden="true">chevron_left</span>
+        </button>
+        <button type="button" aria-label="Próxima página"
+                class="p-xs rounded-lg hover:bg-surface-container-high">
+          <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/app.js"></script>
+  <script>
+    /*
+     * Interação do filtro segmentado (apenas visual no protótipo; no
+     * React o clique mudará um estado que refiltra a lista de dados).
+     *
+     * CODE SMELL REMOVIDO: o script original selecionava os botões por
+     * classe de ESTILO ('.bg-surface-container-low button') — qualquer
+     * mudança visual quebraria o script. Atributos data-* separam
+     * comportamento de aparência.
+     */
+    const botoesFiltro = document.querySelectorAll("[data-filtro]");
+
+    // Classes que representam cada estado, num lugar só (fácil de manter)
+    const CLASSES_ATIVO = ["text-primary", "font-bold", "bg-white", "active-pill"];
+    const CLASSES_INATIVO = ["text-on-surface-variant"];
+
+    botoesFiltro.forEach((botao) => {
+      botao.addEventListener("click", () => {
+        botoesFiltro.forEach((outro) => {
+          outro.classList.remove(...CLASSES_ATIVO);
+          outro.classList.add(...CLASSES_INATIVO);
+          outro.setAttribute("aria-pressed", "false");
+        });
+        botao.classList.add(...CLASSES_ATIVO);
+        botao.classList.remove(...CLASSES_INATIVO);
+        botao.setAttribute("aria-pressed", "true");
+      });
+    });
+  </script>
+</body>
+</html>
