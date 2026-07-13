@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Configuração local (endpoint da API) — ver .env.example
+.env
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
